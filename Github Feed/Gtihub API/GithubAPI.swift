@@ -20,14 +20,7 @@ class GithubAPI: NSObject {
         guard let accessToken = Keychain.loadToken() else { return nil }
         let headerValue = String(format: "Token %@", accessToken)
         request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-        
-        switch endpoint {
-        case .user:
-            request.cachePolicy = .reloadIgnoringLocalCacheData
-        default:
-            break
-        }
-        
+
         return request
     }
     
@@ -68,8 +61,8 @@ class GithubAPI: NSObject {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss ZZZZ"
             if let response = cache.response as? HTTPURLResponse, let dateRaw = response.allHeaderFields["Date"] as? String, let date = dateFormatter.date(from: dateRaw) {
-                if Date().timeIntervalSince(date) > 300 {
-                    return false
+                if Date().timeIntervalSince(date) <= 300 {
+                    return true
                 }
             }
             return false

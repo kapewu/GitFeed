@@ -10,8 +10,8 @@ import Foundation
 import AuthenticationServices
 
 class GithubAuth {
-    private var clientId: String = #APIKEY
-    private var clientSecret: String = #CLIENT SECRET
+    private var clientId: String = #CLIENTID
+    private var clientSecret: String = #CLIENTSECRET
     
     private(set) var session: ASWebAuthenticationSession?
     

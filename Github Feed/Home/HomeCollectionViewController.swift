@@ -105,7 +105,7 @@ class HomeCollectionViewController: UIViewController {
     
     func fetchDatasourceOrUserData() {
         if let username = UserDefaults.standard.string(forKey: "username") {
-            fetchAndFillDatasource(for: "twostraws")
+            fetchAndFillDatasource(for: username)
         } else {
             apiHandler.getCurrentUserData { response in
                 switch response {
