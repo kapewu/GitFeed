@@ -49,7 +49,7 @@ extension GithubEvent {
         case .CommitCommentEvent:
             return NSMutableAttributedString(string: "created commit comment ")
         case .CreateEvent:
-            return NSMutableAttributedString(string: "created" )
+            return NSMutableAttributedString(string: "created " )
         case .DeleteEvent:
              return NSMutableAttributedString(string: "deleted ")
         case .ForkEvent:

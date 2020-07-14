@@ -32,6 +32,10 @@ class HomeCollectionViewController: UIViewController {
         navigationItem.titleView = searchBar
         collectionView.setCollectionViewLayout(initialLayout, animated: false)
         collectionView.keyboardDismissMode = .onDrag
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(fetchDatasourceOrUserData), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
     }
     
     @IBAction func hideKeyboardIfNeeded(_ sender: UITapGestureRecognizer) {
@@ -103,7 +107,7 @@ class HomeCollectionViewController: UIViewController {
         displayLoginOrUpdateFeed()
     }
     
-    func fetchDatasourceOrUserData() {
+    @objc func fetchDatasourceOrUserData() {
         if let username = UserDefaults.standard.string(forKey: "username") {
             fetchAndFillDatasource(for: username)
         } else {
@@ -125,6 +129,7 @@ class HomeCollectionViewController: UIViewController {
             case .success(let feed):
                 self?.datasource = feed
                 self?.layoutSafelyOnMainThread {
+                    self?.collectionView.refreshControl?.endRefreshing()
                     self?.collectionView.reloadData()
                 }
             case .failure(let error):

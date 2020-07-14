@@ -21,7 +21,7 @@ enum Endpoint {
         case .user:
             return base + "/user"
         case .userEvents(let user):
-            return base + "/users/\(user)/received_events"
+            return base + "/users/\(user)/events"
         case .repos(let query):
             return base + "/search/repositories?q=\(query)"
         case .authorization:
