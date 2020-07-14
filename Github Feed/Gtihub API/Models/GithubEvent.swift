@@ -29,12 +29,12 @@ extension GithubEvent {
         
         if let day = components.day, day >= 1 {
             return day == 1 ? "about 1 day ago" : "about \(day) days ago"
-        } else if let hour = components.hour, hour > 1 {
-            return "about \(hour) hours ago"
-        } else if let minute = components.minute, minute > 1 {
-            return "about \(minute) minutes ago"
+        } else if let hour = components.hour, hour >= 1 {
+            return hour == 1 ? "about 1 hour ago" : "about \(hour) hours ago"
+        } else if let minute = components.minute, minute >= 1 {
+            return minute == 1 ? "about 1 minute ago" : "about \(minute) minutes ago"
         } else if let second = components.second {
-            return "about \(second) seconds ago"
+            return second == 1 ? "about 1 second ago" : "about \(second) seconds ago"
         } else {
             return nil
         }

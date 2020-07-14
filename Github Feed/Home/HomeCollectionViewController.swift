@@ -38,6 +38,18 @@ class HomeCollectionViewController: UIViewController {
         collectionView.refreshControl = refreshControl
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        displayLoginOrUpdateFeed()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        searchBar.text = nil
+    }
+    
     @IBAction func hideKeyboardIfNeeded(_ sender: UITapGestureRecognizer) {
         if searchBar.isFirstResponder {
             searchBar.resignFirstResponder()
@@ -99,12 +111,6 @@ class HomeCollectionViewController: UIViewController {
         } else {
             fetchDatasourceOrUserData()
         }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        displayLoginOrUpdateFeed()
     }
     
     @objc func fetchDatasourceOrUserData() {
