@@ -9,14 +9,17 @@
 import Foundation
 
 enum NetworkingError {
+    case invalidURL
+    case authenticationError
     case emptyResponse
 }
 
 extension NetworkingError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .emptyResponse:
-            return "Server response seems to be empty, try again!"
+        case .invalidURL: return "It seems developer made a mistake when writing URL"
+        case .authenticationError: return "Error occured during authentication"
+        case .emptyResponse: return "Server response seems to be empty, try again!"
         }
     }
 }
