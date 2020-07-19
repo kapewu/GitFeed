@@ -7,3 +7,17 @@
 //
 
 import Foundation
+
+public struct JSONParameterEncoder {
+    public func encode(urlRequest: URLRequest, with parameters: [String : String]) throws -> URLRequest {
+        var request = urlRequest
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            request.httpBody = jsonData
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            return request
+        } catch {
+            throw error
+        }
+    }
+}

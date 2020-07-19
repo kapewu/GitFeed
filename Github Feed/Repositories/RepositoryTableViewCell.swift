@@ -16,4 +16,14 @@ class RepositoryTableViewCell: UITableViewCell {
     @IBOutlet weak var licenseLabel: UILabel!
     @IBOutlet weak var updatedAtLabel: UILabel!
     
+    func fillCell(with repository: Repository) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d, yyyy"
+        
+        repositoryNameLabel.text = repository.fullName
+        descriptionLabel.text = repository.description ?? "-"
+        languageLabel.text = repository.language ?? "-"
+        licenseLabel.text = repository.license?.name ?? "No license"
+        updatedAtLabel.text = "Updated on " + dateFormatter.string(from: repository.updatedAt)
+    }
 }

@@ -7,3 +7,13 @@
 //
 
 import Foundation
+
+public struct HeaderParameterInjector {
+    public func injectAuthorizationToken(to request: URLRequest?) throws -> URLRequest {
+        guard let accessToken = Keychain.loadToken() else { throw NetworkingError.authenticationError }
+        guard var request = request else { throw NetworkingError.invalidURL }
+        let headerValue = String(format: "Token %@", accessToken)
+        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        return request
+    }
+}

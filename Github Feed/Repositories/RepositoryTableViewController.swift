@@ -52,14 +52,7 @@ class RepositoryTableViewController: UITableViewController {
         
         if datasource.indices.contains(indexPath.item) {
             let item = datasource[indexPath.item]
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM d, yyyy"
-            
-            cell.repositoryNameLabel.text = item.fullName
-            cell.descriptionLabel.text = item.description ?? "-"
-            cell.languageLabel.text = item.language ?? "-"
-            cell.licenseLabel.text = item.license?.name ?? "No license"
-            cell.updatedAtLabel.text = "Updated on " + dateFormatter.string(from: item.updatedAt)
+            cell.fillCell(with: item)
         }
         
         return cell
@@ -82,7 +75,7 @@ class RepositoryTableViewController: UITableViewController {
         if text.isEmpty {
             datasource = []
         } else {
-            apiHandler?.getRepositoryData(for: text) { [weak self] response in
+            apiHandler?.performRequest(for: .repos(query: text)) { [weak self] (response: Result<GithubRepos, Error>) in
                 switch response {
                 case .success(let repos):
                     self?.datasource = repos.items ?? []

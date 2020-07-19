@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+class GithubKeys {
+    static let clientID: String = //#CLIENTID
+    static let clientSecret: String = //#CLIENTSECRET
+}

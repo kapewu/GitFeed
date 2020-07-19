@@ -39,6 +39,16 @@
                ReferencedContainer = "container:Github Feed.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DFEF483724C465200050DD70"
+               BuildableName = "Github FeedTests.xctest"
+               BlueprintName = "Github FeedTests"
+               ReferencedContainer = "container:Github Feed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

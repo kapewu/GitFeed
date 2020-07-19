@@ -10,9 +10,6 @@ import Foundation
 import AuthenticationServices
 
 class GithubAuth {
-    private var clientId: String = #CLIENTID
-    private var clientSecret: String = #CLIENTSECRET
-    
     private(set) var session: ASWebAuthenticationSession?
     
     weak var delegate: GithubAuthDelegate?
@@ -21,38 +18,9 @@ class GithubAuth {
         session = nil
     }
     
-    private func createURLRequest(for endpoint: Endpoint) -> URLRequest? {
-        var urlComponents: URLComponents? = URLComponents(string: endpoint.pathValue)
-        
-        var queryItems: [URLQueryItem] = [URLQueryItem(name: "client_id", value: clientId)]
-        switch endpoint {
-        case .token(let code):
-            queryItems.append(contentsOf: [URLQueryItem(name: "client_secret", value: clientSecret),
-                                           URLQueryItem(name: "code", value: code)])
-        case .authorization:
-            queryItems.append(URLQueryItem(name: "scope", value: "user repo"))
-        default:
-            break
-        }
-        urlComponents?.queryItems = queryItems
-        
-        guard let url = urlComponents?.url else { return nil }
-        var request = URLRequest(url: url)
-        
-        switch endpoint {
-        case .token:
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.httpMethod = "POST"
-        default:
-            break
-        }
-        
-        return request
-    }
-    
     public func prepareAuthenticationSession(inside viewController: LoginViewController) {
-        guard let authUrl = createURLRequest(for: .authorization)?.url else {
-            delegate?.errorDidOccur(AuthError.invalidURL)
+        guard let authUrl = Endpoint.authorization.request?.url else {
+            delegate?.errorDidOccur(NetworkingError.invalidURL)
             return
         }
         
@@ -66,7 +34,7 @@ class GithubAuth {
                         return
                     }
                 }
-                self?.delegate?.errorDidOccur(AuthError.authenticationError)
+                self?.delegate?.errorDidOccur(NetworkingError.authenticationError)
             }
         }
         
@@ -74,8 +42,8 @@ class GithubAuth {
     }
     
     private func callForToken(withCode code: String) {
-        guard let tokenRequest: URLRequest = createURLRequest(for: .token(code: code)) else {
-            delegate?.errorDidOccur(AuthError.invalidURL)
+        guard let tokenRequest: URLRequest = Endpoint.token(code: code).request else {
+            delegate?.errorDidOccur(NetworkingError.invalidURL)
             return
         }
         

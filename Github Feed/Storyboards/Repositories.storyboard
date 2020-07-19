@@ -1,7 +1,142 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13142" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qMz-yJ-pgB">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12042"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--Repository Table View Controller-->
+        <scene sceneID="XIY-9A-IHo">
+            <objects>
+                <tableViewController id="qMz-yJ-pgB" customClass="RepositoryTableViewController" customModule="Github_Feed" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vRj-PA-5Xr">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="sectionIndexBackgroundColor" systemColor="secondarySystemBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="RepositoryCell" id="zAp-vN-aA4" customClass="RepositoryTableViewCell" customModule="Github_Feed" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="414" height="127.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zAp-vN-aA4" id="Cju-3p-WWz">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="127.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="iZi-v0-HoA">
+                                            <rect key="frame" x="12" y="18" width="244" height="91"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username/repo-name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6V7-A3-R2A">
+                                                    <rect key="frame" x="0.0" y="0.0" width="178.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="some description about" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6lO-KH-FFb">
+                                                    <rect key="frame" x="0.0" y="26.5" width="143" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="C++" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HfP-BQ-qTp">
+                                                    <rect key="frame" x="0.0" y="48.5" width="33.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="gsC-T7-xbe">
+                                                    <rect key="frame" x="0.0" y="75" width="244" height="16"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MIT License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbO-Im-gha">
+                                                            <rect key="frame" x="0.0" y="0.0" width="73.5" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Updated on July 13, 2020" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="42T-RL-XXp">
+                                                            <rect key="frame" x="98.5" y="0.0" width="145.5" height="16"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                            <color key="textColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Gem-Ww-b7P">
+                                            <rect key="frame" x="384" y="46" width="20" height="36.5"/>
+                                            <color key="tintColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="Gem-Ww-b7P" secondAttribute="height" multiplier="1:2" id="I8M-vQ-9bw"/>
+                                                <constraint firstAttribute="width" constant="20" id="LSy-Mf-Cip"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="iZi-v0-HoA" firstAttribute="leading" secondItem="Cju-3p-WWz" secondAttribute="leading" constant="12" id="0Ao-Yg-bF7"/>
+                                        <constraint firstItem="Gem-Ww-b7P" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iZi-v0-HoA" secondAttribute="trailing" constant="15" id="HSF-FH-zb6"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="iZi-v0-HoA" secondAttribute="bottom" constant="18" id="Spo-5U-X7C"/>
+                                        <constraint firstAttribute="trailing" secondItem="Gem-Ww-b7P" secondAttribute="trailing" constant="10" id="VJT-xh-fUY"/>
+                                        <constraint firstItem="iZi-v0-HoA" firstAttribute="top" secondItem="Cju-3p-WWz" secondAttribute="top" constant="18" id="mtN-uz-v8w"/>
+                                        <constraint firstItem="Gem-Ww-b7P" firstAttribute="centerY" secondItem="Cju-3p-WWz" secondAttribute="centerY" id="oIY-8a-YfN"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" name="FeedPrimaryColor"/>
+                                <connections>
+                                    <outlet property="descriptionLabel" destination="6lO-KH-FFb" id="eXI-JQ-nhx"/>
+                                    <outlet property="languageLabel" destination="HfP-BQ-qTp" id="wW7-cE-chM"/>
+                                    <outlet property="licenseLabel" destination="lbO-Im-gha" id="1Ld-r2-fuO"/>
+                                    <outlet property="repositoryNameLabel" destination="6V7-A3-R2A" id="RSy-9o-X5q"/>
+                                    <outlet property="updatedAtLabel" destination="42T-RL-XXp" id="BTo-6W-XFn"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="qMz-yJ-pgB" id="Xxx-Ly-5o4"/>
+                            <outlet property="delegate" destination="qMz-yJ-pgB" id="fkv-0Z-JPv"/>
+                            <outletCollection property="gestureRecognizers" destination="MDt-XU-wmR" appends="YES" id="JTy-MM-6es"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="FSP-0I-dk6"/>
+                    <connections>
+                        <outlet property="searchBar" destination="AOK-Si-0Ir" id="ENS-TA-uSA"/>
+                        <segue destination="Zlv-iY-ykK" kind="show" identifier="showRepositoryDetails" id="5DB-r6-0r2"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iw0-ai-jQF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" id="AOK-Si-0Ir">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="qMz-yJ-pgB" id="zoE-Qa-Tgx"/>
+                    </connections>
+                </searchBar>
+                <tapGestureRecognizer cancelsTouchesInView="NO" id="MDt-XU-wmR">
+                    <connections>
+                        <action selector="hideKeyboardIfNeeded:" destination="qMz-yJ-pgB" id="cve-bx-X7R"/>
+                        <outlet property="delegate" destination="qMz-yJ-pgB" id="CX6-TN-FwT"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1516" y="21"/>
+        </scene>
+        <!--RepositoryDetails-->
+        <scene sceneID="Owu-Zo-lso">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RepositoryDetails" id="Zlv-iY-ykK" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="iXA-t1-vbf"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lAc-8p-Y6W" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2337" y="21"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="chevron.right" catalog="system" width="96" height="128"/>
+        <namedColor name="FeedPrimaryColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

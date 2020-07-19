@@ -27,15 +27,11 @@ class HomeCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let initialLayout = getLayoutFor(style: .list)
         
         navigationItem.titleView = searchBar
-        collectionView.setCollectionViewLayout(initialLayout, animated: false)
-        collectionView.keyboardDismissMode = .onDrag
         
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(fetchDatasourceOrUserData), for: .valueChanged)
-        collectionView.refreshControl = refreshControl
+        setupCollectionView()
+        setupRefreshControll()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,9 +71,21 @@ class HomeCollectionViewController: UIViewController {
         }
     }
     
+    private func setupCollectionView() {
+        let initialLayout = getLayoutFor(style: .list)
+        collectionView.setCollectionViewLayout(initialLayout, animated: false)
+        collectionView.keyboardDismissMode = .onDrag
+    }
+    
+    private func setupRefreshControll() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(fetchDatasourceOrUserData), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+    }
+    
     private func getLayoutFor(style: LayoutStyle) -> UICollectionViewCompositionalLayout {
-        var size: NSCollectionLayoutSize
-        var horizontalItemCount: Int
+        var size: NSCollectionLayoutSize = collectionLayoutSize(for: style)
+        var horizontalItemCount: Int = collectionLayoutItemCount(for: style)
         
         switch style {
         case .list:
@@ -103,9 +111,27 @@ class HomeCollectionViewController: UIViewController {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
+    private func collectionLayoutSize(for style: LayoutStyle) -> NSCollectionLayoutSize {
+        switch style {
+        case .list:
+            return NSCollectionLayoutSize(widthDimension: NSCollectionLayoutDimension.fractionalWidth(1),
+                                          heightDimension: NSCollectionLayoutDimension.absolute(45))
+        case .grid:
+            return NSCollectionLayoutSize(widthDimension: NSCollectionLayoutDimension.fractionalWidth(1),
+                                          heightDimension: NSCollectionLayoutDimension.absolute(60))
+        }
+    }
+    
+    private func collectionLayoutItemCount(for style: LayoutStyle) -> Int {
+        switch style {
+            case .list: return 1
+            case .grid: return 2
+        }
+    }
+    
     private func displayLoginOrUpdateFeed() {
         if Keychain.loadToken() == nil {
-            let loginViewController = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(identifier: "Login") as! LoginViewController
+            let loginViewController = UIStoryboard(name: "Login", bundle: Bundle.main).instantiateViewController(identifier: "Login") as! LoginViewController
             loginViewController.modalPresentationStyle = .fullScreen
             navigationController?.present(loginViewController, animated: true)
         } else {
@@ -117,7 +143,7 @@ class HomeCollectionViewController: UIViewController {
         if let username = UserDefaults.standard.string(forKey: "username") {
             fetchAndFillDatasource(for: username)
         } else {
-            apiHandler.getCurrentUserData { response in
+            apiHandler.performRequest(for: .user, completionHandler: { (response: Result<GitHubUserModel, Error>) in
                 switch response {
                 case .success(let user):
                     UserDefaults.standard.set(user.login, forKey: "username")
@@ -125,13 +151,13 @@ class HomeCollectionViewController: UIViewController {
                 case .failure(let error):
                     self.displayAlert(for: error)
                 }
-            }
+            })
         }
     }
     
     func fetchAndFillDatasource(for username: String) {
-        apiHandler.getFeedData(for: username) { [weak self] result in
-            switch result {
+        apiHandler.performRequest(for: .userEvents(user: username)) { [weak self] (response: Result<[GithubEvent], Error>) in
+            switch response {
             case .success(let feed):
                 self?.datasource = feed
                 self?.layoutSafelyOnMainThread {

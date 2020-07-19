@@ -8,17 +8,16 @@
 
 import UIKit.UIView
 
-@IBDesignable
-class RoundedView: UIView {
-    @IBInspectable var cornerRadius: CGFloat = 0.0 {
-        didSet {
-            self.setNeedsLayout()
+@IBDesignable class RoundedView: UIView {}
+@IBDesignable class RoundedButton: UIButton {}
+
+extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-            
-        layer.cornerRadius = cornerRadius
+        set {
+            layer.cornerRadius = newValue
+        }
     }
 }

@@ -13,50 +13,21 @@ class GithubAPI: NSObject {
         return Keychain.loadToken()
     }
     
-    private func createURLRequest(for endpoint: Endpoint) -> URLRequest? {
-        guard let url = URL(string: endpoint.pathValue) else { return nil }
-        var request = URLRequest(url: url)
-        
-        guard let accessToken = Keychain.loadToken() else { return nil }
-        let headerValue = String(format: "Token %@", accessToken)
-        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-
-        return request
-    }
-    
-    func getLoggedUserData(completionHandler: @escaping (Result<GitHubUserModel, Error>) -> Void) {
-        if let request = createURLRequest(for: .user) {
-            URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
-        }
-    }
-    
-    func getFeedData(for user: String, completionHandler: @escaping (Result<[GithubEvent], Error>) -> Void) {
-        if let request = createURLRequest(for: .userEvents(user: user)) {
-            if let cache = URLCache.shared.cachedResponse(for: request) {
-                if shouldUseCache(cache) {
-                    completionHandler(decodeEventsSynchronouslyFromCache(cache.data))
-                } else {
-                    URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
-                }
-            } else {
-                URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
+    func performRequest<T: Codable>(for endpoint: Endpoint, completionHandler: @escaping (Result<T, Error>) -> Void) {
+        guard let request = endpoint.request else { return }
+        if endpoint.cachable {
+            if shouldUseCache(for: request) {
+                let cache = URLCache.shared.cachedResponse(for: request)!
+                let result: Result<T, Error> = decodeEventsSynchronouslyFromCache(cache.data)
+                completionHandler(result)
+                return
             }
         }
+        URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
     }
     
-    func getCurrentUserData(completionHandler: @escaping (Result<GitHubUserModel, Error>) -> Void) {
-        if let request = createURLRequest(for: .user) {
-            URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
-        }
-    }
-    
-    func getRepositoryData(for query: String, completionHandler: @escaping (Result<GithubRepos, Error>) -> Void) {
-        if let request = createURLRequest(for: .repos(query: query)) {
-            URLSession.shared.jsonDataTask(with: request, completionHandler: completionHandler).resume()
-        }
-    }
-    
-    private func shouldUseCache(_ cache: CachedURLResponse) -> Bool {
+    private func shouldUseCache(for request: URLRequest) -> Bool {
+        guard let cache = URLCache.shared.cachedResponse(for: request) else { return false }
         if Reachability.isConnectedToNetwork() {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "E, d MMM yyyy HH:mm:ss ZZZZ"
@@ -71,16 +42,14 @@ class GithubAPI: NSObject {
         }
     }
     
-    private func decodeEventsSynchronouslyFromCache(_ cache: Data) -> Result<[GithubEvent], Error> {
+    private func decodeEventsSynchronouslyFromCache<T : Codable>(_ cache: Data) -> Result<T, Error> {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         do {
-            let userModel = try decoder.decode([GithubEvent].self, from: cache)
+            let userModel = try decoder.decode(T.self, from: cache)
             return .success(userModel)
         } catch {
             return .failure(error)
         }
     }
-    
-    
 }

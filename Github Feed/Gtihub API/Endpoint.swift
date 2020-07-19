@@ -8,26 +8,84 @@
 
 import Foundation
 
-enum Endpoint {
+enum HTTPMethod: String {
+    case get = "GET"
+    case post = "POST"
+}
+
+enum Endpoint: EndpointType {
     case user
     case userEvents(user: String)
     case repos(query: String)
     case authorization
     case token(code: String)
     
-    var pathValue: String {
-        let base = "https://api.github.com"
+    var base: URL {
         switch self {
-        case .user:
-            return base + "/user"
-        case .userEvents(let user):
-            return base + "/users/\(user)/events"
-        case .repos(let query):
-            return base + "/search/repositories?q=\(query)"
-        case .authorization:
-            return "https://github.com/login/oauth/authorize"
-        case .token:
-            return "https://github.com/login/oauth/access_token"
+        case .authorization, .token:
+            return URL(string: "https://github.com")!
+        case .repos, .user, .userEvents:
+            return URL(string: "https://api.github.com")!
         }
     }
+    
+    var path: String {
+        switch self {
+        case .user:
+            return "/user"
+        case .userEvents(let user):
+            return "/users/\(user)/events"
+        case .repos:
+            return "/search/repositories"
+        case .authorization:
+            return "/login/oauth/authorize"
+        case .token:
+            return "/login/oauth/access_token"
+        }
+    }
+    
+    var method: HTTPMethod {
+        switch self {
+        case .token:
+            return .post
+        default:
+            return .get
+        }
+    }
+    
+    var cachable: Bool {
+        switch self {
+        case .userEvents:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    var request: URLRequest? {
+        let url = base.appendingPathComponent(path)
+        var request: URLRequest? = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 15.0)
+        request!.httpMethod = method.rawValue
+        request!.setValue("application/json", forHTTPHeaderField: "Accept")
+        
+        var parameters: [String : String] = [:]
+        switch self {
+        case .authorization:
+            request = try? URLParameterEncoder().encode(urlRequest: request!, with: ["client_id" : GithubKeys.clientID,
+                                                                                     "scope" : "repo"])
+        case .token(let code):
+            parameters = ["client_id" : GithubKeys.clientID,
+                          "client_secret" : GithubKeys.clientSecret,
+                          "code" : code]
+            request = try? JSONParameterEncoder().encode(urlRequest: request!, with: parameters)
+        case .repos(let query):
+            request = try? URLParameterEncoder().encode(urlRequest: request!, with: ["q" : query])
+            request = try? HeaderParameterInjector().injectAuthorizationToken(to: request)
+        default:
+            request = try? HeaderParameterInjector().injectAuthorizationToken(to: request)
+        }
+        
+        return request
+    }
 }
+

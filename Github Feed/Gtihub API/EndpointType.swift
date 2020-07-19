@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+protocol EndpointType {
+    var base: URL { get }
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var request: URLRequest? { get }
+    var cachable: Bool { get }
+}
